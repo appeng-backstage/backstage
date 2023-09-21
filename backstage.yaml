@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: backstage
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: backstage:latest
+  source:
+    type: Git
+    git:
+      uri: https://github.com/appeng-backstage/backstage
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: "nodejs:latest"
+        namespace: openshift
+      scripts: https://raw.githubusercontent.com/redhat-developer/redhat-backstage-build/main/.s2i/bin/
+  triggers:
+  - type: ConfigChange
